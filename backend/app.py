@@ -53,7 +53,38 @@ def mirror(name):
 
 @app.route("/shows", methods=['GET'])
 def get_all_shows():
-    return create_response({"shows": db.get('shows')})
+    min_episodes = request.args.get("minEpisodes")
+    if min_episodes is None:
+        return create_response({"shows": db.get('shows')})
+    shows = [show for show in db.get('shows') if show['episodes_seen'] >= int(min_episodes)]
+    return create_response({"shows": shows})
+
+@app.route("/shows", methods=['POST'])
+def add_show():
+    if not request.is_json:
+        return create_response(status=400, message="JSON request expected")
+    show = request.get_json()
+    try:
+        show = {"name": show["name"], "episodes_seen": show["episodes_seen"]}
+    except:
+        return create_response(status=422, message="Parameters 'name', 'episodes_seen' expected")
+    show = db.create("shows", {"name": show["name"], "episodes_seen": show["episodes_seen"]})
+    return create_response(show, status=201)
+
+
+@app.route("/shows/<id>", methods=['GET'])
+def get_show(id):
+    show = db.getById("shows", int(id))
+    if show is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response(show)
+
+@app.route("/shows/<id>", methods=['PUT'])
+def update_show(id):
+    response = db.updateById("shows", int(id), request.get_json())
+    if response is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response(response)
 
 @app.route("/shows/<id>", methods=['DELETE'])
 def delete_show(id):
