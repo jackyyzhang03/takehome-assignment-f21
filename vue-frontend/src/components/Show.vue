@@ -1,8 +1,11 @@
 <template>
   <!-- PART 4: Add your code here -->
-  <div>
-    <p>{{name}}</p>
-    <Counter :initial_count="episodes_seen"/>
+  <div class="card">
+    <button class="delete" v-on:click="onClick(id)"></button>
+    <div class="card-content">
+    <h5>{{name}}</h5>
+    <Counter :initial_count="episodes_seen" label="Episodes Seen"/>
+    </div>
   </div>
 </template>
 
@@ -22,10 +25,22 @@ export default {
     },
     episodes_seen: {
       type: Number
+    },
+    onClick: {
+      type: Function
     }
   }
 };
 </script>
 
 <style>
+.delete {
+  border-radius: 100%;
+  height: 14px;
+  width: 14px;
+  border-width: 0;
+  background-color: #f44336;
+  margin: 5px;
+  margin-left: auto;
+}
 </style>
