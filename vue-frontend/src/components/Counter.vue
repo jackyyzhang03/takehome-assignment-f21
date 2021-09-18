@@ -1,8 +1,8 @@
 <template>
 <div>
     <p>{{this.label}}: {{this.count}}</p>
-    <button v-on:click="() => this.onClick(this.count - 1)">Decrement</button>
-    <button v-on:click="() => this.onClick(this.count + 1)">Increment</button>
+    <button v-on:click="() => this.onUpdate(this.count - 1)">Decrement</button>
+    <button v-on:click="() => this.onUpdate(this.count + 1)">Increment</button>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
       type: String,
       default: "Count"
     },
-    onClick: {
+    onUpdate: {
       type: Function
     }
   },

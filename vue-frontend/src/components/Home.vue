@@ -10,14 +10,14 @@
         :id="show.id"
         :name="show.name"
         :episodes_seen="show.episodes_seen"
-        :onClick="delete_show"
+        :onDelete="deleteShowById"
         :onUpdate="updateEpisodesWatched"
       />
       <div class="card">
         <div class="card-content">
           <h5>New Show</h5>
           <input v-model="input" class="book-input" />
-          <button v-on:click="add_show()">Add</button>
+          <button v-on:click="addShow()">Add</button>
         </div>
       </div>
     </div>
@@ -34,15 +34,15 @@ export default {
     Show,
   },
   methods: {
-    add_show() {
+    addShow() {
       this.shows.push({
-        id: ++this.id_count,
+        id: ++this.idCounter,
         name: this.input,
         episodes_seen: 0,
       });
       this.input = "";
     },
-    delete_show(id) {
+    deleteShowById(id) {
       const i = this.findShowIndexById(id);
       this.shows.splice(i, 1);
     },
@@ -56,7 +56,7 @@ export default {
   },
   data() {
     return {
-      id_count: 3,
+      idCounter: 3,
       input: "",
       shows: [
         { id: 1, name: "Game of Thrones", episodes_seen: 0 },
@@ -72,9 +72,9 @@ export default {
       },
       deep: true,
     },
-    id_count: {
+    idCounter: {
       handler() {
-        localStorage.setItem("id_count", this.id_count);
+        localStorage.setItem("idCounter", this.idCounter);
       },
     },
   },
@@ -82,8 +82,8 @@ export default {
     if (localStorage.getItem("shows")) {
       this.shows = JSON.parse(localStorage.getItem("shows"));
     }
-    if (localStorage.getItem("id_count")) {
-      this.shows = localStorage.get("id_count");
+    if (localStorage.getItem("idCounter")) {
+      this.idCounter = localStorage.getItem("idCounter");
     }
   },
 };
