@@ -1,29 +1,26 @@
 <template>
 <div>
     <p>{{this.label}}: {{this.count}}</p>
-    <button v-on:click="count--">Decrement</button>
-    <button v-on:click="count++">Increment</button>
+    <button v-on:click="() => this.onClick(this.count - 1)">Decrement</button>
+    <button v-on:click="() => this.onClick(this.count + 1)">Increment</button>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    initial_count: {
+    count: {
       type: Number,
       default: 0
     },
     label: {
       type: String,
       default: "Count"
+    },
+    onClick: {
+      type: Function
     }
   },
-
-  data() {
-    return {
-      count: this.initial_count
-    };
-  }
 };
 </script>
 

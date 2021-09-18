@@ -4,7 +4,7 @@
     <button class="delete" v-on:click="onClick(id)"></button>
     <div class="card-content">
     <h5>{{name}}</h5>
-    <Counter :initial_count="episodes_seen" label="Episodes Seen"/>
+    <Counter :count="episodes_seen" :onClick="(count) => onUpdate(this.id, count)" label="Episodes Seen"/>
     </div>
   </div>
 </template>
@@ -27,6 +27,9 @@ export default {
       type: Number
     },
     onClick: {
+      type: Function
+    },
+    onUpdate: {
       type: Function
     }
   }

@@ -11,11 +11,12 @@
         :name="show.name"
         :episodes_seen="show.episodes_seen"
         :onClick="delete_show"
+        :onUpdate="updateEpisodesWatched"
       />
       <div class="card">
         <div class="card-content">
           <h5>New Show</h5>
-          <input v-model="input" class="book-input"/>
+          <input v-model="input" class="book-input" />
           <button v-on:click="add_show()">Add</button>
         </div>
       </div>
@@ -35,20 +36,27 @@ export default {
   methods: {
     add_show() {
       this.shows.push({
-        id: ++this.show_count,
+        id: ++this.id_count,
         name: this.input,
         episodes_seen: 0,
       });
       this.input = "";
     },
     delete_show(id) {
-      const i = this.shows.findIndex((show) => show.id === id);
+      const i = this.findShowIndexById(id);
       this.shows.splice(i, 1);
-    }
+    },
+    updateEpisodesWatched(id, count) {
+      const i = this.findShowIndexById(id);
+      this.shows[i].episodes_seen = count;
+    },
+    findShowIndexById(id) {
+      return this.shows.findIndex((show) => show.id === id);
+    },
   },
   data() {
     return {
-      show_count: 3,
+      id_count: 3,
       input: "",
       shows: [
         { id: 1, name: "Game of Thrones", episodes_seen: 0 },
@@ -56,6 +64,27 @@ export default {
         { id: 3, name: "Black Mirror", episodes_seen: 3 },
       ],
     };
+  },
+  watch: {
+    shows: {
+      handler() {
+        localStorage.setItem("shows", JSON.stringify(this.shows));
+      },
+      deep: true,
+    },
+    id_count: {
+      handler() {
+        localStorage.setItem("id_count", this.id_count);
+      },
+    },
+  },
+  mounted() {
+    if (localStorage.getItem("shows")) {
+      this.shows = JSON.parse(localStorage.getItem("shows"));
+    }
+    if (localStorage.getItem("id_count")) {
+      this.shows = localStorage.get("id_count");
+    }
   },
 };
 </script>
@@ -93,7 +122,6 @@ button {
   border-radius: 5px;
   background-color: white;
 }
-
 </style>
 
 
