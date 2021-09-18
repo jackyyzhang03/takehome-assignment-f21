@@ -16,12 +16,18 @@
       <div class="card">
         <div class="card-content">
           <h5>New Show</h5>
-          <input v-model="input" v-on:keydown.enter="addShow()" class="book-input" />
+          <input
+            v-model="input"
+            v-on:keydown.enter="addShow()"
+            class="book-input"
+          />
           <button v-on:click="addShow()">Add</button>
         </div>
       </div>
     </div>
-    <button class="reset" v-on:click="resetLocalStorage()">Reset Local Storage</button>
+    <button class="reset" v-on:click="resetLocalStorage()">
+      Reset Local Storage
+    </button>
   </div>
 </template>
 
@@ -36,12 +42,14 @@ export default {
   },
   methods: {
     addShow() {
-      this.shows.push({
-        id: ++this.idCounter,
-        name: this.input,
-        episodes_seen: 0,
-      });
-      this.input = "";
+      if (this.input) {
+        this.shows.push({
+          id: ++this.idCounter,
+          name: this.input,
+          episodes_seen: 0,
+        });
+        this.input = "";
+      }
     },
     deleteShowById(id) {
       const i = this.findShowIndexById(id);
@@ -57,7 +65,7 @@ export default {
     resetLocalStorage() {
       localStorage.clear();
       location.reload();
-    }
+    },
   },
   data() {
     return {
