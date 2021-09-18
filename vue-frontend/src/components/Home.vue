@@ -16,11 +16,12 @@
       <div class="card">
         <div class="card-content">
           <h5>New Show</h5>
-          <input v-model="input" class="book-input" />
+          <input v-model="input" v-on:keydown.enter="addShow()" class="book-input" />
           <button v-on:click="addShow()">Add</button>
         </div>
       </div>
     </div>
+    <button class="reset" v-on:click="resetLocalStorage()">Reset Local Storage</button>
   </div>
 </template>
 
@@ -53,6 +54,10 @@ export default {
     findShowIndexById(id) {
       return this.shows.findIndex((show) => show.id === id);
     },
+    resetLocalStorage() {
+      localStorage.clear();
+      location.reload();
+    }
   },
   data() {
     return {
@@ -121,6 +126,12 @@ export default {
 button {
   border-radius: 5px;
   background-color: white;
+}
+
+.reset {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 </style>
 
